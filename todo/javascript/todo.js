@@ -106,10 +106,6 @@ require(['jquery', 'sakai/sakai.api.core'], function($, sakai) {
 			}, true);
 		};
 
-		var validateForm = function() {
-			
-		};
-
 		/**
 		 * Triggers a save of the changed state of a todo
 		 * Executed on change of a checkbox value
