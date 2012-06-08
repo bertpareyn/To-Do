@@ -28,136 +28,135 @@ require(['jquery', 'sakai/sakai.api.core'], function($, sakai) {
      *
      * @description
      * The To-do widget lists tasks and to-do's on a page or personal dashboard
-	 * This version does not support roles yet
+     * This version does not support roles yet
      *
      * @version 0.0.1
      * @param {String} tuid Unique id of the widget
      * @param {Boolean} showSettings Show the settings of the widget or not
      */
-    sakai_global.todo = function (tuid, showSettings) {
+    sakai_global.todo = function(tuid, showSettings) {
 
 
         /////////////////////////////
         // Configuration variables //
         /////////////////////////////
 
-		var $rootel = $('#' + tuid);
+        var $rootel = $('#' + tuid);
 
-		// Elements
-		var $todoAddTodoButton = $('#todo_add_todo_button', $rootel);
-		var $todoAddTodoForm = $('#todo_add_todo_form', $rootel);
-		var $todoAddTodoTitle = $('#todo_add_todo_title', $rootel);
-		var $todoTitleShort = $('#todo_title_short', $rootel);
-		var todoCheckbox = '.todo_checkbox';
-		var todoRemove = '.todo_remove';
+        // Elements
+        var $todoAddTodoButton = $('#todo_add_todo_button', $rootel);
+        var $todoAddTodoForm = $('#todo_add_todo_form', $rootel);
+        var $todoAddTodoTitle = $('#todo_add_todo_title', $rootel);
+        var $todoTitleShort = $('#todo_title_short', $rootel);
+        var todoCheckbox = '.todo_checkbox';
+        var todoRemove = '.todo_remove';
 
-		// Containers
-		var $todoTodosListContainer = $('#todo_todos_list_container', $rootel);
+        // Containers
+        var $todoTodosListContainer = $('#todo_todos_list_container', $rootel);
 
-		// Templates
-		var todoTodosListTemplate = 'todo_todos_list_template';
+        // Templates
+        var todoTodosListTemplate = 'todo_todos_list_template';
 
-		// Widget variables
-		var todoData = {
-			'todos': []
-		};
+        // Widget variables
+        var todoData = {
+            'todos': []
+        };
 
 
         ///////////////////////
         // Utility functions //
         ///////////////////////
 
-		/**
-		 * Renders the list of todos in the widget
-		 */
-		var renderToDos = function() {
-			$todoTodosListContainer.html(
-				sakai.api.Util.TemplateRenderer(todoTodosListTemplate, {
-					'todos': todoData.todos || false,
-					'tuid': tuid
-				})
-			);
-		};
+        /**
+         * Renders the list of todos in the widget
+         */
+        var renderToDos = function() {
+            $todoTodosListContainer.html(
+                sakai.api.Util.TemplateRenderer(todoTodosListTemplate, {
+                    'todos': todoData.todos || false,
+                    'tuid': tuid
+                })
+            );
+        };
 
-		/**
-		 * Fetches the todos from the system
-		 */
-		var getToDos = function() {
-			sakai.api.Widgets.loadWidgetData(tuid, function(success, data) {
-				if (success) {
-					if (data.todos.length) {
-						todoData = data;
-					} else {
-						todoData = {
-							'todos': []
-						};
-					}
-				}
-				renderToDos();
-			});
-		};
+        /**
+         * Fetches the todos from the system
+         */
+        var getToDos = function() {
+            sakai.api.Widgets.loadWidgetData(tuid, function(success, data) {
+                if (success) {
+                    if (data.todos) {
+                        todoData = data;
+                    } else {
+                        todoData = {
+                            'todos': []
+                        };
+                    }
+                }
+                renderToDos();
+            });
+        };
 
-		/**
-		 * Saves the todos to the system
-		 */
-		var saveToDos = function() {
-			sakai.api.Widgets.saveWidgetData(tuid, todoData, function(success, data) {
-				renderToDos();
-			}, true);
-		};
+        /**
+         * Saves the todos to the system
+         */
+        var saveToDos = function() {
+            sakai.api.Widgets.saveWidgetData(tuid, todoData, function(success, data) {
+                renderToDos();
+            }, true);
+        };
 
-		/**
-		 * Triggers a save of the changed state of a todo
-		 * Executed on change of a checkbox value
-		 */
-		var tickedTodoBox = function() {
-			todoData.todos[$(this).attr('data-arrid')].completed = $(this).is(':checked');
-			saveToDos();
-		};
+        /**
+         * Triggers a save of the changed state of a todo
+         * Executed on change of a checkbox value
+         */
+        var tickedTodoBox = function() {
+            todoData.todos[$(this).attr('data-arrid')].completed = $(this).is(':checked');
+            saveToDos();
+        };
 
-		/**
-		 * Removes a todo from the list
-		 */
-		var removeTodo = function() {
-			todoData.todos.splice($(this).attr('data-arrid'), 1);
-			saveToDos();
-		};
+        /**
+         * Removes a todo from the list
+         */
+        var removeTodo = function() {
+            todoData.todos.splice($(this).attr('data-arrid'), 1);
+            saveToDos();
+        };
 
 
         ////////////////////
         // Event Handlers //
         ////////////////////
 
-		/**
-		 * Adds binding to various elements of the widget
-		 */
-		var addBinding = function() {
-			$todoAddTodoButton.on('click', validateForm);
-			$rootel.on('change', todoCheckbox, tickedTodoBox);
-			$rootel.on('click', todoRemove, removeTodo);
-			var validateOpts = {
-			    rules: {
-			        todo_add_todo_title: {
-			            minlength: 3
-			        }
-			    },
-			    messages: {
-			        todo_add_todo_title: {
-			            minlength: $todoTitleShort.text()
-			        }
-			    },
-			    submitHandler: function(form, validator){
-			        todoData.todos.push({
-						'completed': false,
-			            'description': $todoAddTodoTitle.val()
-					});
-					$todoAddTodoTitle.val('');
-					saveToDos();
-			        return false;
-			    }
-			};
-			sakai.api.Util.Forms.validate($todoAddTodoForm, validateOpts, true);
-		};
+        /**
+         * Adds binding to various elements of the widget
+         */
+        var addBinding = function() {
+            $rootel.on('change', todoCheckbox, tickedTodoBox);
+            $rootel.on('click', todoRemove, removeTodo);
+            var validateOpts = {
+                'rules': {
+                    todo_add_todo_title: {
+                        minlength: 3
+                    }
+                },
+                'messages': {
+                    todo_add_todo_title: {
+                        minlength: $todoTitleShort.text()
+                    }
+                },
+                'submitHandler': function(form, validator){
+                    todoData.todos.push({
+                        'completed': false,
+                        'description': $todoAddTodoTitle.val()
+                    });
+                    $todoAddTodoTitle.val('');
+                    saveToDos();
+                    return false;
+                }
+            };
+            sakai.api.Util.Forms.validate($todoAddTodoForm, validateOpts, true);
+        };
 
 
         ////////////////////
@@ -167,9 +166,9 @@ require(['jquery', 'sakai/sakai.api.core'], function($, sakai) {
         /**
          * Initializes the widget
          */
-        var doInit = function () {
+        var doInit = function() {
             addBinding();
-			getToDos();
+            getToDos();
         };
 
         doInit();

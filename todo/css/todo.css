@@ -17,18 +17,21 @@
  */
 
 .todo_widget {
-	padding: 0px 12px;
+    padding: 0px 12px;
 }
 .todo_widget #todo_add_todo_form input {
-	resize: none;
-	width: 55%;
+    resize: none;
+    width: 55%;
 }
 .todo_widget #todo_todos_list_container ul {
-	margin: 0 0 7px;
+    margin: 0 0 7px;
 }
-.todo_widget .todo_checkbox:checked + label{
-	text-decoration: line-through;
+.todo_widget .todo_checkbox:checked + label {
+    text-decoration: line-through;
 }
 .todo_widget #todo_add_todo_title_error {
-	width: 55%;
+    width: 55%;
+}
+.todo_widget .todo_remove {
+    margin-top: -5px;
 }
