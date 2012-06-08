@@ -1,0 +1,30 @@
+{
+    "id":                 "todo",
+    "name":               "todo",
+	"deletable": 		  true,
+    "description":        "Lists tasks and to-do's",
+    "type":               "sakai",
+    "enabled":            true,
+    "hasSettings":        false,
+    "url":                "/devwidgets/todo/todo.html",
+    "img":                "/devwidgets/todo/images/todo.png",
+    "i18n": {
+        "default": {
+            "bundle":        "/devwidgets/todo/bundles/default.properties",
+            "name":           "To-do",
+            "description":    "Lists tasks and to-do's"
+        },
+        "nl_NL": {
+            "bundle":        "/devwidgets/todo/bundles/nl_NL.properties",
+            "name":           "To-do",
+            "description":    "Lijst taken en to-do's op"
+        },
+        "fr_FR": {
+            "bundle":        "/devwidgets/todo/bundles/fr_FR.properties",
+            "name":           "To-do",
+            "description":    "Liste des tâches"
+        }
+    },
+    "personalportal":     true,
+    "sakaidocs":          true
+}
