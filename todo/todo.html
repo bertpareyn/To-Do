@@ -3,7 +3,7 @@
 
 <!-- WIDGET CONTENT CONTAINER -->
 <div class="todo_widget">
-    <div id="todo_todos_list_container"><!----></div>
+    <div id="todo_todos_list_container"><!-- --></div>
     <div id="todo_add_todo_container">
         <form id="todo_add_todo_form" class="s3d-form-field-wrapper">
             <label for="todo_add_todo_title" style="display:none;">__MSG__ADD_TODO__</label>
@@ -18,8 +18,8 @@
             {for todo in todos}
                 <li class="s3d-search-result">
                     <button type="button" class="todo_remove s3d-button s3d-link-button fl-force-right" data-arrid="${todo_index}">__MSG__REMOVE__</button>
-                    <input type="checkbox" id="todo_${todo_index}_${tuid}" class="todo_checkbox" {if todo.completed}  checked="checked"{/if} data-arrid="${todo_index}"/>
-                    <label for="todo_${todo_index}_${tuid}" {if todo.completed}class="todo_completed""{/if}>${todo.description}</label>
+                    <input type="checkbox" id="todo_${todo_index}_${tuid}" class="todo_checkbox" {if todo.completed} checked="checked"{/if} data-arrid="${todo_index}"/>
+                    <label for="todo_${todo_index}_${tuid}" {if todo.completed}class="todo_completed"{/if}>${todo.description}</label>
                 </li>
             {forelse}
                 <label for="todo_add_todo_title" class="s3d-bold">__MSG__NOTHING_TO_DO__</label>
